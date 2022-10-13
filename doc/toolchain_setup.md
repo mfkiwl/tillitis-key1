@@ -48,8 +48,32 @@ These steps are used to build and install the
     make -j$(nproc)
     sudo make install
 
+For macOS, you will need to build a separate branch of iceprog:
+
+    # Custom iceprog for the RPi 2040-based programmer (will be upstreamed).
+    git clone -b interfaces https://github.com/tillitis/icestorm tillitis--icestorm
+    cd tillitis--icestorm/iceprog
+    git checkout -b iceprog_tillitis_macos origin/iceprog_tillitis_macos
+    make
+    sudo make PROGRAM_PREFIX=tillitis- install
+    cd ../..
+
+
 References:
 * http://bygone.clairexen.net/icestorm/
+
+### Updating the pico programmer firmware (for macOS / Windows compatibility)
+
+If you received your [programming board](https://github.com/tillitis/tillitis-key1/blob/main/hw/boards/README.md#mta1-usb-v1-programmer) from the OSFC conference, it may need to be updated to work with macOS and Windows. To do so, you will need a computer (running any OS), the programming board, and a USB A to micro cable. Follow these steps:
+
+1. Download the [firmware update](https://github.com/Blinkinlabs/ice40_flasher/blob/main/bin/main.uf2) from the [ice40 flasher library.](https://github.com/Blinkinlabs/ice40_flasher)
+2. Disconnect the programmer from the computer, if it was attached.
+3. Find the small white 'BOOT SEL' button on the programmer board, and press it down.
+4. While holding the button down, connect the programmer board to the computer using the USB cable.
+5. The computer should identify the programming board as a USB disk. Copy the 'main.u2f' firmware file to this USB disk.
+6. After the file finishes copying, the programmer will reboot automatically, causing the USB disk to disappear.
+7. The programming board is now updated and ready to use.
+
 
 ## Firmware: riscv toolchain
 
